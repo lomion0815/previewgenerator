@@ -173,7 +173,9 @@ class Generate extends Command {
 
 		foreach ($nodes as $node) {
 			if ($node instanceof Folder) {
-				$this->parseFolder($node);
+                if (!$node->isMounted()) {
+                    $this->parseFolder($node);
+                }
 			} else if ($node instanceof File) {
 				$this->parseFile($node);
 			}

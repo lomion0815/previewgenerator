@@ -203,7 +203,7 @@ class PreGenerate extends Command {
 	}
 
 	private function processFile(File $file) {
-		if ($this->previewGenerator->isMimeSupported($file->getMimeType())) {
+		if (!$file->isMounted() && $this->previewGenerator->isMimeSupported($file->getMimeType())) {
 			if ($this->output->getVerbosity() > OutputInterface::VERBOSITY_VERBOSE) {
 				$this->output->writeln('Generating previews for ' . $file->getPath());
 			}
@@ -237,6 +237,10 @@ class PreGenerate extends Command {
 		if ($this->output->getVerbosity() > OutputInterface::VERBOSITY_VERBOSE) {
 			$this->output->writeln('Generating previews for folder ' . $folder->getPath());
 		}
+
+        if ( $folder->isMounted()) {
+            return;
+        }
 
 		$nodes = $folder->getDirectoryListing();
 
